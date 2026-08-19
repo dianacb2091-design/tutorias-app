@@ -17,11 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={inter.className}>
-        <Navbar />
-        <main className="container mx-auto px-4 py-8">
-          {children}
-        </main>
+      <body className={`${inter.className} bg-[#E7DCC8] min-h-screen`}>
+        <div className="max-w-5xl mx-auto my-6 bg-[#FAF6ED] rounded-2xl shadow-2xl overflow-hidden">
+          <Navbar />
+          <main className="px-6 py-8">{children}</main>
+        </div>
       </body>
     </html>
   )
