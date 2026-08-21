@@ -1,33 +1,46 @@
 import TutorCard from '@/components/TutorCard'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
-const tutoresTemporales = [
-  {
-    nombre: 'Ana Torres',
-    materia: 'Matemáticas',
-    descripcion: 'Profesora con 5 años de experiencia ayudando a niños de primaria.',
-    precio: 8,
-  },
-  {
-    nombre: 'Luis Mendoza',
-    materia: 'Lenguaje',
-    descripcion: 'Licenciado en educación, especialista en comprensión lectora.',
-    precio: 7,
-  },
-  {
-    nombre: 'Carla Ruiz',
-    materia: 'Inglés',
-    descripcion: 'Clases divertidas y prácticas para todas las edades.',
-    precio: 10,
-  },
-]
+interface Disponibilidad {
+  id: string
+  materia: string
+  descripcion: string | null
+  precio: number
+  profiles: { full_name: string | null } | null
+}
 
-export default function Tutores() {
+export default async function Tutores() {
+  const supabase = createSupabaseServerClient()
+
+  const { data, error } = await supabase
+  .from('disponibilidades')
+  .select('id, materia, descripcion, precio, profiles ( full_name )')
+
+if (error) {
+  return (
+    <p className="text-center text-red-600 font-semibold">
+      Error de Supabase: {error.message}
+    </p>
+  )
+}
+
+const disponibilidades = (data ?? []) as Disponibilidad[]
+  
+
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6 text-center">Tutores Disponibles</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-[#722F37]">
+        Tutores Disponibles
+      </h1>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tutoresTemporales.map((tutor) => (
-          <TutorCard key={tutor.nombre} {...tutor} />
+        {disponibilidades.map((d) => (
+          <TutorCard
+            key={d.id}
+            nombre={d.profiles?.full_name ?? 'Sin nombre'}
+            materia={d.materia}
+            descripcion={d.descripcion ?? ''}
+            precio={d.precio}
+          />
         ))}
       </div>
     </div>
