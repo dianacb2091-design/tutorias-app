@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import LogoutButton from '@/components/LogoutButton'
+import Link from 'next/link'
 
 export default async function Dashboard() {
   const supabase = createSupabaseServerClient()
@@ -17,7 +18,19 @@ export default async function Dashboard() {
         Sesión iniciada como:{' '}
         <span className="font-semibold text-[#722F37]">{user.email}</span>
       </p>
-      <LogoutButton />
+
+      <div className="flex flex-col items-center gap-3">
+
+      
+        <Link
+         href="/dashboard/horarios"
+          className="inline-block bg-[#722F37] text-[#F3EAD9] px-6 py-2 rounded-lg font-semibold hover:bg-[#5B252C] "
+        >
+        Gestionar mis horarios
+        </Link>
+
+        <LogoutButton />
+            </div>
     </div>
   )
 }
