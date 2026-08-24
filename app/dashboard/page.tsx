@@ -11,6 +11,12 @@ export default async function Dashboard() {
 
   if (!user) redirect('/login')
 
+    const { data: profile } = await supabase
+  .from('profiles')
+  .select('role')
+  .eq('id', user.id)
+  .single()
+
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-8 text-center">
       <h1 className="text-3xl font-bold mb-2 text-[#722F37]">Mi Panel</h1>
@@ -22,12 +28,29 @@ export default async function Dashboard() {
       <div className="flex flex-col items-center gap-3">
 
       
-        <Link
-         href="/dashboard/horarios"
-          className="inline-block bg-[#722F37] text-[#F3EAD9] px-6 py-2 rounded-lg font-semibold hover:bg-[#5B252C] "
-        >
-        Gestionar mis horarios
-        </Link>
+        {profile?.role === 'tutor' ? (
+          <>
+            <Link
+              href="/dashboard/horarios"
+              className="inline-block bg-[#722F37] text-[#F3EAD9] px-6 py-2 rounded-lg font-semibold hover:bg-[#5B252C]"
+            >
+              Gestionar mis horarios
+            </Link>
+            <Link
+              href="/dashboard/reservas-recibidas"
+              className="inline-block bg-[#722F37] text-[#F3EAD9] px-6 py-2 rounded-lg font-semibold hover:bg-[#5B252C]"
+            >
+              Reservas recibidas
+            </Link>
+          </>
+        ) : (
+          <Link
+            href="/dashboard/reservas"
+            className="inline-block bg-[#722F37] text-[#F3EAD9] px-6 py-2 rounded-lg font-semibold hover:bg-[#5B252C]"
+          >
+            Mis reservas
+          </Link>
+        )}
 
         <LogoutButton />
             </div>
