@@ -34,6 +34,7 @@ export default function MisHorarios() {
   }, [])
 
   async function eliminar(id: string) {
+    if (!confirm('¿Eliminar este horario? Esta acción no se puede deshacer.')) return
     await supabase.from('disponibilidades').delete().eq('id', id)
     cargar()
   }
@@ -66,13 +67,24 @@ export default function MisHorarios() {
                   {h.fecha} a las {h.hora} — {h.descripcion}
                 </p>
               </div>
-              <button
-                onClick={() => eliminar(h.id)}
-                className="text-red-700 font-semibold hover:underline"
-              >
+              <div className="flex gap-4">
+              <Link
+                 href={`/dashboard/horarios/${h.id}/editar`}
+                  className="text-blue-700 font-semibold hover:underline"
+                >
+                 Editar
+                  </Link>
+                <button
+                 onClick={() => eliminar(h.id)}
+                   className="text-red-700 font-semibold hover:underline"
+                >
                 Eliminar
-              </button>
+               </button>
+              
+              </div>
+      
             </li>
+            
           ))}
         </ul>
       )}
