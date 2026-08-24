@@ -1,5 +1,7 @@
 import TutorCard from '@/components/TutorCard'
+import BotonReservar from '@/components/BotonReservar'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+
 
 interface Disponibilidad {
   id: string
@@ -14,15 +16,7 @@ export default async function Tutores() {
 
   const { data, error } = await supabase
   .from('disponibilidades')
-  .select('id, materia, descripcion, precio, profiles ( full_name )')
-
-if (error) {
-  return (
-    <p className="text-center text-red-600 font-semibold">
-      Error de Supabase: {error.message}
-    </p>
-  )
-}
+  .select('*, profiles(full_name)') 
 
 const disponibilidades = (data ?? []) as Disponibilidad[]
   
@@ -34,6 +28,7 @@ const disponibilidades = (data ?? []) as Disponibilidad[]
       </h1>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {disponibilidades.map((d) => (
+          <div key={d.id} className="flex flex-col gap-3">
           <TutorCard
             key={d.id}
             nombre={d.profiles?.full_name ?? 'Sin nombre'}
@@ -41,6 +36,8 @@ const disponibilidades = (data ?? []) as Disponibilidad[]
             descripcion={d.descripcion ?? ''}
             precio={d.precio}
           />
+          <BotonReservar disponibilidadId={d.id} />
+          </div>
         ))}
       </div>
     </div>
