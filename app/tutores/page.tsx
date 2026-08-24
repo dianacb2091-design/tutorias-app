@@ -14,7 +14,7 @@ interface Disponibilidad {
 export default async function Tutores() {
   const supabase = createSupabaseServerClient()
 
-  const { data, error } = await supabase
+  const { data, } = await supabase
   .from('disponibilidades')
   .select('*, profiles(full_name)') 
 

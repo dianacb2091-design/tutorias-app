@@ -37,6 +37,9 @@ export default function Navbar() {
           <Link href="/tutores" className="text-[#F3EAD9] hover:text-white">
             Ver Tutores
           </Link>
+          <Link href="/recursos" className="text-[#F3EAD9] hover:text-white">
+             Recursos
+          </Link>
           {user ? (
             <>
               <Link href="/dashboard" className="text-[#F3EAD9] hover:text-white font-semibold">
