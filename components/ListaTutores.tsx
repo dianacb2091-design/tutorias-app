@@ -2,13 +2,15 @@
 
 import { useState } from 'react'
 import TutorCard from './TutorCard'
-import AgendarCita from './AgendarCita'
+
 
 interface Disponibilidad {
   id: string
   materia: string
   descripcion: string | null
   profiles: { full_name: string | null } | null
+  fecha: string | null
+  hora: string | null
 }
 
 export default function ListaTutores({ disponibilidades }: { disponibilidades: Disponibilidad[] }) {
@@ -39,11 +41,13 @@ export default function ListaTutores({ disponibilidades }: { disponibilidades: D
           {filtrados.map((d) => (
             <div key={d.id} className="flex flex-col gap-3">
               <TutorCard
-                nombre={d.profiles?.full_name ?? 'Sin nombre'}
-                materia={d.materia}
-                descripcion={d.descripcion ?? ''}
-              />
-              <AgendarCita disponibilidadId={d.id} />
+  id={d.id}
+  nombre={d.profiles?.full_name ?? 'Sin nombre'}
+  materia={d.materia}
+  descripcion={d.descripcion ?? ''}
+  
+/>
+              
             </div>
           ))}
         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
@@ -8,8 +8,26 @@ export default function AgendarCita({ disponibilidadId }: { disponibilidadId: st
   const router = useRouter()
   const [mensaje, setMensaje] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [rol, setRol] = useState<string | null>(null)
+  const [cargando, setCargando] = useState(true)
 
-  async function cita () {
+  useEffect(() => {
+    async function cargar() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: perfil } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+        setRol(perfil?.role ?? null)
+      }
+      setCargando(false)
+    }
+    cargar()
+  }, [])
+
+  async function cita() {
     setMensaje(null)
     setError(null)
 
@@ -29,6 +47,9 @@ export default function AgendarCita({ disponibilidadId }: { disponibilidadId: st
     }
     setMensaje('¡Cita agendada!')
   }
+
+  if (cargando) return null
+  if (rol !== null && rol.toLowerCase() !== 'padre') return null
 
   return (
     <div className="text-center">
