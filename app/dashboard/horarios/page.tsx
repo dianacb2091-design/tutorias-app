@@ -10,7 +10,7 @@ interface Disponibilidad {
   descripcion: string | null
   fecha: string | null
   hora: string | null
-  precio: number
+
 }
 
 export default function MisHorarios() {
@@ -62,7 +62,7 @@ export default function MisHorarios() {
           {horarios.map((h) => (
             <li key={h.id} className="bg-white rounded-xl shadow p-4 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="font-bold text-[#722F37]">{h.materia} · ${h.precio}/hora</p>
+                <p className="font-bold text-[#722F37]">{h.materia}</p>
                 <p className="text-sm text-gray-600">
                   {h.fecha} a las {h.hora} — {h.descripcion}
                 </p>

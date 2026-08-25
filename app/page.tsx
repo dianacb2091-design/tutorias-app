@@ -4,11 +4,11 @@ export default function Home() {
   return (
     <section className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-10 md:p-14 text-center">
       <h1 className="text-4xl md:text-5xl font-extrabold text-[#722F37] mb-4">
-        Reserva tutorías sin perder tiempo
+        Agenda la cita con el tutor sin perder tiempo
+        
       </h1>
       <p className="text-xl text-gray-600 mb-8">
-        Encuentra tutores cerca de ti, mira sus horarios reales y reserva
-        el tuyo antes de salir de casa.
+        Mira los horarios de atención reales de cada tutor y agenda tu cita antes de salir de casa. Sin esperas y sin pagos.
       </p>
       <div className="flex justify-center gap-4">
         <Link

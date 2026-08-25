@@ -11,7 +11,7 @@ interface ReservaRecibida {
     materia: string
     fecha: string | null
     hora: string | null
-    precio: number
+    
   } | null
 }
 
@@ -37,7 +37,7 @@ export default function ReservasRecibidas() {
 
     const { data } = await supabase
       .from('reservas')
-      .select('*, profiles(full_name), disponibilidades(materia, fecha, hora, precio)')
+      .select('*, profiles(full_name), disponibilidades(materia, fecha, hora)')
       .in('disponibilidad_id', ids)
       .order('created_at', { ascending: false })
 
@@ -56,13 +56,13 @@ export default function ReservasRecibidas() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-[#722F37] mb-6">Reservas recibidas</h1>
+      <h1 className="text-3xl font-bold text-[#722F37] mb-6">Citas recibidas</h1>
 
       {cargando ? (
         <p className="text-gray-600">Cargando...</p>
       ) : reservas.length === 0 ? (
         <p className="text-gray-600 bg-white rounded-xl p-6 text-center shadow">
-          Aún no has recibido reservas.
+          Aún no has recibido citas.
         </p>
       ) : (
         <ul className="space-y-3">
@@ -70,10 +70,10 @@ export default function ReservasRecibidas() {
             <li key={r.id} className="bg-white rounded-xl shadow p-4 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="font-bold text-[#722F37]">
-                  {r.profiles?.full_name ?? 'Un padre'} reservó {r.disponibilidades?.materia ?? 'tu horario'}
+                  {r.profiles?.full_name ?? 'Un padre'} agendó cita de {r.disponibilidades?.materia ?? 'tu horario'}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {r.disponibilidades?.fecha} a las {r.disponibilidades?.hora} · ${r.disponibilidades?.precio}/hora
+                  {r.disponibilidades?.fecha} a las {r.disponibilidades?.hora} 
                 </p>
                 <span
                   className={`inline-block mt-1 text-xs font-bold px-2 py-1 rounded-full ${

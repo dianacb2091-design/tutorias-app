@@ -10,7 +10,6 @@ interface Reserva {
     materia: string
     fecha: string | null
     hora: string | null
-    precio: number
     profiles: { full_name: string | null } | null
   } | null
 }
@@ -24,7 +23,7 @@ export default function MisReservas() {
     if (!user) return
     const { data } = await supabase
       .from('reservas')
-      .select('*, disponibilidades(materia, fecha, hora, precio, profiles(full_name))')
+      .select('*, disponibilidades(materia, fecha, hora, profiles(full_name))')
       .eq('padre_id', user.id)
       .order('created_at', { ascending: false })
     setReservas((data as Reserva[]) ?? [])
@@ -36,20 +35,20 @@ export default function MisReservas() {
   }, [])
 
   async function cancelar(id: string) {
-    if (!confirm('¿Cancelar esta reserva?')) return
+    if (!confirm('¿Cancelar esta cita?')) return
     await supabase.from('reservas').update({ estado: 'cancelada' }).eq('id', id)
     cargar()
   }
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-[#722F37] mb-6">Mis reservas</h1>
+      <h1 className="text-3xl font-bold text-[#722F37] mb-6">Mis citas</h1>
 
       {cargando ? (
         <p className="text-gray-600">Cargando...</p>
       ) : reservas.length === 0 ? (
         <p className="text-gray-600 bg-white rounded-xl p-6 text-center shadow">
-          Aún no has reservado horarios.
+          Aún no has agendado citas.
         </p>
       ) : (
         <ul className="space-y-3">
@@ -60,7 +59,7 @@ export default function MisReservas() {
                   {r.disponibilidades?.materia ?? 'Materia'} con {r.disponibilidades?.profiles?.full_name ?? 'tutor'}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {r.disponibilidades?.fecha} a las {r.disponibilidades?.hora} · ${r.disponibilidades?.precio}/hora
+                  {r.disponibilidades?.fecha} a las {r.disponibilidades?.hora} 
                 </p>
                 <span
                   className={`inline-block mt-1 text-xs font-bold px-2 py-1 rounded-full ${

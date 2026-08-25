@@ -13,7 +13,7 @@ export default function EditarHorario() {
   const [descripcion, setDescripcion] = useState('')
   const [fecha, setFecha] = useState('')
   const [hora, setHora] = useState('')
-  const [precio, setPrecio] = useState(0)
+  
   const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function EditarHorario() {
         setDescripcion(data.descripcion ?? '')
         setFecha(data.fecha ?? '')
         setHora(data.hora ?? '')
-        setPrecio(data.precio)
+        
       }
       setCargando(false)
     }
@@ -39,7 +39,7 @@ export default function EditarHorario() {
     e.preventDefault()
     const { error } = await supabase
       .from('disponibilidades')
-      .update({ materia, descripcion, fecha, hora, precio })
+      .update({ materia, descripcion, fecha, hora,})
       .eq('id', id)
     if (!error) {
       router.push('/dashboard/horarios')
@@ -96,18 +96,6 @@ export default function EditarHorario() {
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#722F37]"
             />
           </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">Precio ($/hora)</label>
-          <input
-            type="number"
-            value={precio}
-            onChange={(e) => setPrecio(Number(e.target.value))}
-            required
-            min={0}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#722F37]"
-          />
         </div>
 
         <button
