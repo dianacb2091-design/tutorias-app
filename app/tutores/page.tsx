@@ -5,6 +5,8 @@ interface Disponibilidad {
   id: string
   materia: string
   descripcion: string | null
+  fecha: string | null
+  hora: string | null
   profiles: { full_name: string | null } | null
 }
 
