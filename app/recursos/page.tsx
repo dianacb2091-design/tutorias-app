@@ -74,16 +74,24 @@ export default async function Recursos({ searchParams }: { searchParams: { q?: s
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {libros.map((l) => (
-              <div key={l.key} className="bg-white rounded-xl shadow p-4">
-                <h2 className="font-bold text-[#722F37]">{l.title}</h2>
-                <p className="text-sm text-gray-600">
-                  {l.author_name?.slice(0, 2).join(', ') ?? 'Autor desconocido'}
+              <a
+            key={l.key}
+            href={`https://openlibrary.org${l.key}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block bg-white rounded-xl shadow p-4 hover:shadow-lg transition-shadow"
+            >
+              <h2 className="font-bold text-[#722F37]">{l.title}</h2>
+              <p className="text-sm text-gray-600">
+                {l.author_name?.slice(0, 2).join(', ') ?? 'Autor desconocido'}
                 </p>
                 {l.first_publish_year && (
                   <p className="text-xs text-gray-500 mt-2">Publicado en {l.first_publish_year}</p>
-                )}
-              </div>
-            ))}
+                  )}
+                  <p className="text-xs text-[#722F37] font-semibold mt-3">Ver libro en Open Library ↗</p>
+                  </a>
+                  ))}
+              
           </div>
         </>
       )}

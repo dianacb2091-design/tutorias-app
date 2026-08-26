@@ -22,6 +22,22 @@ export default async function DetalleHorario({ params }: { params: { id: string 
     )
   }
 
+  let clima: { min: number; max: number; lluvia: number } | null = null
+  try {
+    const resClima = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=-2.90&longitude=-79.01&start_date=${data.fecha}&end_date=${data.fecha}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`
+      )
+      if (resClima.ok) {
+        const j = await resClima.json()
+        clima = {
+          min: j.daily.temperature_2m_min[0],
+          max: j.daily.temperature_2m_max[0],
+          lluvia: j.daily.precipitation_probability_max[0],
+          }
+        }
+      } catch {
+    clima = null
+  }
   
 
   return (
@@ -36,6 +52,13 @@ export default async function DetalleHorario({ params }: { params: { id: string 
       </p>
       <p className="text-gray-700 mb-1">📅 Fecha: <span className="font-semibold">{data.fecha}</span></p>
       <p className="text-gray-700 mb-4">🕐 Hora: <span className="font-semibold">{data.hora}</span></p>
+
+      {clima && (
+  <p className="text-gray-700 mb-4">
+    🌤️ Clima previsto en Cuenca ese día: {clima.min}° a {clima.max}°C · Probabilidad de lluvia: {clima.lluvia}%
+  </p>
+)}
+
       {data.descripcion && <p className="text-gray-600 mb-6">{data.descripcion}</p>}
 
       <AgendarCita disponibilidadId={data.id} />
